@@ -1,0 +1,8 @@
+<div class="relative" x-data="{ slide: 0, slides: ['images/banner.jpg', 'images/image.jpg'] }">
+  <template x-for="(src, index) in slides" :key="index">
+    <img :src="src" class="absolute w-full h-full object-cover" x-show="slide === index" />
+  </template>
+
+  <button class="absolute top-1/2 left-0 ml-2" @click="slide = slide === 0 ? slides.length - 1 : slide - 1">‹</button>
+  <button class="absolute top-1/2 right-0 mr-2" @click="slide = (slide + 1) % slides.length">›</button>
+</div>

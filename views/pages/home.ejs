@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+</head>
+<body>
+ <img src="images/banner.jpg" alt="">
+ <%- include('../partials/components/category')  %>
+
+ <%- include('../partials/components/product', { products: products }) %>
+ <%- include('../partials/featuredprod', { featuredProducts: featuredProducts }) %>
+</body>
+</html>

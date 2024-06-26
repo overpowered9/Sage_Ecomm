@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shoe Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const addPhotoButton = document.getElementById('addPhotoButton');
+      const photoInputsContainer = document.getElementById('photoInputsContainer');
+
+      addPhotoButton.addEventListener('click', () => {
+        const newInput = document.createElement('input');
+        newInput.setAttribute('type', 'text');
+        newInput.setAttribute('name', 'imageUrls');
+        newInput.setAttribute('class', 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2');
+        newInput.setAttribute('placeholder', 'Image URL');
+        photoInputsContainer.appendChild(newInput);
+      });
+    });
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8 text-center">Shoe Store</h1>
+    
+    <!-- Form to add a new product -->
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-8">
+      <form action="/products/add" method="POST">
+        <div class="flex items-center">
+          <input type="checkbox" id="isFeatured" name="isFeatured" class="mr-2">
+          <label for="isFeatured" class="block text-gray-700 text-sm font-bold">Featured Product</label>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="articleNumber">Article Number:</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="articleNumber" name="articleNumber" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Name:</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="name" name="name" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="category">Category:</label>
+          <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category" name="category" required>
+            <option value="formal">Formal</option>
+            <option value="casual">Casual</option>
+            <option value="slippers">Slippers</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="price">Price:</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="price" name="price" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description:</label>
+          <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description" required></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="sizes">Sizes (format: size:quantity, e.g., 8:10,9:5):</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="sizes" name="sizes" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="imageUrls">Image URLs:</label>
+          <div id="photoInputsContainer">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" type="text" name="imageUrls" placeholder="Image URL">
+          </div>
+          <button type="button" id="addPhotoButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Photo</button>
+        </div>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Add Product</button>
+      </form>
+    </div>
+    
+    <h2 class="text-3xl font-bold mb-4">Products</h2>
+    <ul class="space-y-4">
+      <% products.forEach(product => { %>
+        <li class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+          <h3 class="text-2xl font-bold mb-2"><%= product.name %> (<%= product.category %>)</h3>
+          <p class="text-gray-700 mb-2">Article Number: <%= product.articleNumber %></p>
+          <p class="text-gray-700 mb-2">Price: $<%= product.price %></p>
+          <p class="text-gray-700 mb-2">Description: <%= product.description %></p>
+          <p class="text-gray-700 mb-2">Sizes:</p>
+          <ul class="list-disc list-inside mb-4">
+            <% product.sizes.forEach(sizeObj => { %>
+              <li>Size <%= sizeObj.size %>: <%= sizeObj.quantity %> available</li>
+            <% }) %>
+          </ul>
+          <% if (product.imageUrls && product.imageUrls.length > 0) { %>
+            <img class="w-full max-w-xs mx-auto" src="<%= product.imageUrls[0] %>" alt="<%= product.name %>">
+          <% } %>
+          <form action="/products/delete/<%= product._id %>" method="POST" class="mt-4"> <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button> </form>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!-- product.ejs (Partial Template) -->
+<div class="p-[20px]">
+    <ul class="flex justify-center flex-row flex-wrap gap-2">
+      <% products.forEach(product => { %>
+        <li class="flex flex-col w-[240px] rounded overflow-hidden items-center shadow-lg bg-white p-4">
+          <% if (product.imageUrls && product.imageUrls.length > 0) { %>
+            <img class="w-[200px] aspect-auto cursor-pointer" src="<%= product.imageUrls[0] %>" alt="<%= product.name %>" onclick="window.location.href='/products/product/<%= product._id %>'">
+          <% } %>
+          <div class="px-6 py-4">
+            <div class="
+            font-bold text-xl mb-2"><%= product.name %></div>
+            <p class="flex justify-center text-gray-700 text-base"><%= product.articleNumber %></p>
+            <div>
+              <!-- Sizes -->
+              <div class="flex flex-row gap-2 justify-center">
+                <% product.sizes.forEach(sizeObj => { %>
+                  <div class="bg-gray-200 p-2 flex justify-center"><%= sizeObj.size %></div>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="showSizeSelection('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.imageUrls[0] %>')">Add to Cart</button>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+  
+  <!-- Modal Structure -->
+  <div id="sizeModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-4 rounded shadow-lg">
+      <h2 class="text-xl font-bold mb-4">Select Size</h2>
+      <select id="modalSizeSelect" class="mb-4 p-2 border rounded">
+        <% products[0].sizes.forEach(sizeObj => { %> <!-- Assuming all products have the same size options -->
+          <option value="<%= sizeObj.size %>"><%= sizeObj.size %></option>
+        <% }) %>
+      </select>
+      <div class="flex justify-end gap-2">
+        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="closeModal()">Cancel</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="addToCartFromModal()">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let selectedProduct = null;
+  
+    function showSizeSelection(productId, productName, productPrice, productImage) {
+      selectedProduct = { productId, productName, productPrice, productImage };
+      document.getElementById('sizeModal').classList.remove('hidden');
+    }
+  
+    function addToCartFromModal() {
+  const size = document.getElementById('modalSizeSelect').value;
+  const cartItem = { ...selectedProduct, size, quantity: 1};
+  let cart = JSON.parse(getCookie('cart') || '[]');
+
+  // Check if the product is already in the cart
+  const existingItem = cart.find(item => item.productId === cartItem.productId && item.size === cartItem.size);
+
+  if (existingItem) {
+    // If the product is already in the cart, increment the quantity
+    existingItem.quantity += 1;
+  } else {
+    // If the product is not in the cart, add it
+    cart.push(cartItem);
+  }
+
+  document.cookie = `cart=${JSON.stringify(cart)}; path=/`;
+  alert('Product added to cart!');
+  closeModal();
+}
+  
+    function closeModal() {
+      document.getElementById('sizeModal').classList.add('hidden');
+    }
+  
+    function getCookie(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+  </script>
+    

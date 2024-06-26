@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Categories</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="flex justify-between p-[100px] bg-teal-100">
+    <div class="relative w-[300px]" onclick="navigateToCategory('casual')">
+        <img class="w-full aspect-auto hover:scale-110 transition-transform" src="https://i0.wp.com/sageleather.com.pk/wp-content/uploads/2023/11/420033-Blue-5.jpg?fit=714%2C893&ssl=1" alt="Casual">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+            <span class="text-white text-xl">Casuals</span>
+        </div>
+    </div>
+    <div class="relative w-[300px]" onclick="navigateToCategory('formal')">
+        <img class="w-full aspect-auto hover:scale-110 transition-transform" src="https://i0.wp.com/sageleather.com.pk/wp-content/uploads/2024/05/420030-Black-5-min.jpg?w=714&ssl=1" alt="Formal">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+            <span class="text-white text-xl">Formals</span>
+        </div>
+    </div>
+    <div class="relative w-[300px]" onclick="navigateToCategory('slippers')">
+        <img class="w-full aspect-auto hover:scale-110 transition-transform" src="https://i0.wp.com/sageleather.com.pk/wp-content/uploads/2024/01/480454-Brown-4.jpg?fit=714%2C893&ssl=1" alt="Slippers">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+            <span class="text-white text-xl">Slippers</span>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    function navigateToCategory(category) {
+      window.location.href = `/products/products_listings?category=${category}`;
+    }
+  </script>
+</body>
+</html>
